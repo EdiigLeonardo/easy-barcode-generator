@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import JsBarcode from "jsbarcode";
 import {
   Table,
@@ -104,12 +105,18 @@ export default function InterleavedBarcodeGenerator() {
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>
+              <TableRow
+                key={row.id}
+                style={{
+                  maxHeight: "1rem",
+                }}
+              >
+                <TableCell align="center">
                   <TextField
                     fullWidth
                     variant="outlined"
                     value={row.inputValue}
+                    disabled={row.barcodeData !== null}
                     onChange={(e) => handleInputChange(row.id, e.target.value)}
                     placeholder="Digite valores numéricos"
                     inputProps={{
@@ -121,17 +128,31 @@ export default function InterleavedBarcodeGenerator() {
 
                 <TableCell align="center">
                   {row.barcodeData && (
-                    <img
-                      width={200}
-                      src={row.barcodeData}
-                      alt="Barcode"
+                    <div
                       style={{
+                        display: "flex",
+                        justifyContent: "center",
                         width: "100%",
-                        height: "100%",
                         padding: "10px",
-                        objectFit: "contain",
                       }}
-                    />
+                    >
+                      <Image
+                        src={row.barcodeData}
+                        alt={`Código de barras para ${row.inputValue}`}
+                        width={200}
+                        height={60}
+                        style={{
+                          display: "flex",
+                          objectFit: "contain",
+                          maxWidth: "100%",
+                          justifyContent: "center",
+                          justifySelf: "center",
+                          alignSelf: "center",
+                          height: "auto",
+                          padding: "1rem",
+                        }}
+                      />
+                    </div>
                   )}
                 </TableCell>
 
