@@ -1,0 +1,115 @@
+"use client";
+import { BarcodeRow } from "@/app/types";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+  Button,
+  Divider,
+} from "@mui/material";
+import Image from "next/image";
+
+interface BarcodeTableProps {
+  rows: BarcodeRow[];
+  onInputChange: (rowId: number, value: string) => void;
+  onGenerate: (value: string, rowId: number) => void;
+  onReset: () => void;
+}
+
+export function BarcodeTable({
+  rows,
+  onInputChange,
+  onGenerate,
+  onReset,
+}: BarcodeTableProps) {
+  return (
+    <>
+      <Table style={{ tableLayout: "fixed", maxHeight: "80%" }}>
+        <TableHead>
+          <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+            <TableCell width="40%">Valor de Entrada</TableCell>
+            <TableCell width="40%" align="center">
+              Código de Barras
+            </TableCell>
+            <TableCell width="20%" align="center">
+              Ação
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow key={row.id} style={{ maxHeight: "1rem" }}>
+              <TableCell align="center">
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  value={row.inputValue}
+                  disabled={row.barcodeData !== null}
+                  onChange={(e) => onInputChange(row.id, e.target.value)}
+                  placeholder="Digite valores numéricos"
+                  inputProps={{
+                    pattern: "^[0-9]*$",
+                    maxLength: 20,
+                  }}
+                />
+              </TableCell>
+
+              <TableCell align="center">
+                {row.barcodeData && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      width: "100%",
+                      padding: "10px",
+                    }}
+                  >
+                    <Image
+                      src={row.barcodeData}
+                      alt={`Código de barras para ${row.inputValue}`}
+                      width={200}
+                      height={60}
+                      style={{
+                        display: "flex",
+                        objectFit: "contain",
+                        maxWidth: "100%",
+                        justifyContent: "center",
+                        justifySelf: "center",
+                        alignSelf: "center",
+                        height: "auto",
+                        padding: "1rem",
+                      }}
+                    />
+                  </div>
+                )}
+              </TableCell>
+
+              <TableCell align="center">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => onGenerate(row.inputValue, row.id)}
+                  disabled={
+                    row.inputValue?.trim() === "" || row.barcodeData !== null
+                  }
+                  sx={{ textTransform: "none" }}
+                >
+                  Gerar
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Divider />
+      <div style={{ padding: "16px", maxHeight: "10%" }}>
+        <Button variant="outlined" onClick={onReset} sx={{ m: 2 }}>
+          Limpar Formulário
+        </Button>
+      </div>
+    </>
+  );
+}

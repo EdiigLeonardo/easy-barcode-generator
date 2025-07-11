@@ -1,20 +1,36 @@
 "use client";
 import { useState, useEffect } from "react";
 import JsBarcode from "jsbarcode";
-import { Box, Paper } from "@mui/material";
+import { Box, Paper, TextareaAutosize, Button } from "@mui/material";
 import { BarcodeTable } from "@/components/BarcodeTable";
-import { initialRows, BarcodeRow } from "@/app/types";
+import { BarcodeRow } from "@/app/types";
 
-export default function InterleavedBarcodeGenerator() {
+export default function BatchBarcodeGenerator() {
   const [rows, setRows] = useState<BarcodeRow[]>([]);
   const [isMounted, setIsMounted] = useState(false);
+  const [inputList, setInputList] = useState("");
 
   useEffect(() => {
     setIsMounted(true);
-    if (rows.length === 0) {
-      setRows(initialRows);
-    }
   }, []);
+
+  const processList = () => {
+    console.log("[screen][batch]Processed input values:", {
+      inputList: inputList.split("\n"),
+    });
+    // const values = inputList
+    //   .split("\n")
+    //   .map((v) => v.trim())
+    //   .filter((v) => v.length > 0);
+
+    // const newRows = values.map((value) => ({
+    //   id: Math.floor(Math.random() * 1000000),
+    //   inputValue: value,
+    //   barcodeData: null,
+    // }));
+
+    // setRows(newRows);
+  };
 
   const generateBarcode = (value: string, rowId: number) => {
     if (!value.trim() || !isMounted) return;
@@ -33,20 +49,11 @@ export default function InterleavedBarcodeGenerator() {
 
       const dataUrl = canvas.toDataURL("image/png");
 
-      setRows((prev) => {
-        const newRows = prev.map((row) =>
+      setRows((prev) =>
+        prev.map((row) =>
           row.id === rowId ? { ...row, barcodeData: dataUrl } : row
-        );
-
-        return [
-          ...newRows,
-          {
-            id: Math.floor(Math.random() * 1000000),
-            inputValue: "",
-            barcodeData: null,
-          },
-        ];
-      });
+        )
+      );
     } catch (error) {
       console.error("Erro ao gerar código de barras:", error);
     }
@@ -64,12 +71,30 @@ export default function InterleavedBarcodeGenerator() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 800, mx: "auto" }}>
+      <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
+        <TextareaAutosize
+          minRows={3}
+          placeholder="Insira os valores separados por linha"
+          value={inputList}
+          onChange={(e) => setInputList(e.target.value)}
+          style={{ width: "100%", padding: "8px" }}
+        />
+        <Button
+          variant="contained"
+          onClick={processList}
+          sx={{ mt: 2 }}
+          disabled={!inputList.trim()}
+        >
+          Processar Lista
+        </Button>
+      </Paper>
+
       <Paper elevation={3}>
         <BarcodeTable
           rows={rows}
           onInputChange={handleInputChange}
           onGenerate={generateBarcode}
-          onReset={() => setRows(initialRows)}
+          onReset={() => setRows([])}
         />
       </Paper>
     </Box>
