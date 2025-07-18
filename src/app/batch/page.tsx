@@ -78,7 +78,7 @@ export default function BatchBarcodeGenerator() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 800, mx: "auto" }}>
-      {!rows ? (
+      {!inputList ? (
         <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
           <TextareaAutosize
             minRows={3}
