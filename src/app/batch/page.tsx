@@ -15,24 +15,29 @@ export default function BatchBarcodeGenerator() {
   }, []);
 
   const processList = () => {
-    console.log("[screen][batch]Processed input values:", {
-      inputList: inputList.split("\n"),
+    interface InputStop {
+      volumeCode: string;
+      [key: string]: unknown;
+    }
+
+    JSON.parse(inputList)?.forEach((stops: InputStop) => {
+      const volumeCode = stops?.volumeCode;
+      if (volumeCode) {
+        generateBarcode(volumeCode, Math.floor(Math.random() * 1000000));
+      } else {
+        alert(
+          "Erro: O volumeCode está ausente ou os dados estão em formato inválido. Verifique o JSON inserido."
+        );
+        console.error(
+          "processList: volumeCode ausente ou dados inválidos para o item:",
+          stops
+        );
+      }
     });
-    // const values = inputList
-    //   .split("\n")
-    //   .map((v) => v.trim())
-    //   .filter((v) => v.length > 0);
-
-    // const newRows = values.map((value) => ({
-    //   id: Math.floor(Math.random() * 1000000),
-    //   inputValue: value,
-    //   barcodeData: null,
-    // }));
-
-    // setRows(newRows);
   };
 
   const generateBarcode = (value: string, rowId: number) => {
+    console.info(`Generating barcode for value: ${value}, rowId: ${rowId}`);
     if (!value.trim() || !isMounted) return;
 
     const canvas = document.createElement("canvas");
@@ -48,12 +53,14 @@ export default function BatchBarcodeGenerator() {
       });
 
       const dataUrl = canvas.toDataURL("image/png");
-
-      setRows((prev) =>
-        prev.map((row) =>
-          row.id === rowId ? { ...row, barcodeData: dataUrl } : row
-        )
-      );
+      setRows((prevRows) => [
+        ...prevRows,
+        {
+          id: Math.floor(Math.random() * 1000000),
+          inputValue: value,
+          barcodeData: dataUrl,
+        },
+      ]);
     } catch (error) {
       console.error("Erro ao gerar código de barras:", error);
     }
@@ -85,7 +92,7 @@ export default function BatchBarcodeGenerator() {
           sx={{ mt: 2 }}
           disabled={!inputList.trim()}
         >
-          Processar Lista
+          Gerar Barcodes
         </Button>
       </Paper>
 
