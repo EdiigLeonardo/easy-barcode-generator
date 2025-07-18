@@ -28,15 +28,18 @@ export function BarcodeTable({
   return (
     <>
       <Table
-        style={{ tableLayout: "fixed", maxHeight: "80%", maxWidth: "100%" }}
+        style={{ tableLayout: "auto", maxHeight: "80%", maxWidth: "100%" }}
       >
         <TableHead>
           <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
-            <TableCell width="40%">Valor de Entrada</TableCell>
-            <TableCell width="40%" align="center">
+            <TableCell width="30%">Valor de Entrada</TableCell>
+            <TableCell width="30%" align="center">
               Código de Barras
             </TableCell>
-            <TableCell width="20%" align="center">
+            <TableCell width="auto" align="center">
+              Nome do Cliente
+            </TableCell>
+            <TableCell width="auto" align="center">
               Ação
             </TableCell>
           </TableRow>
@@ -75,7 +78,7 @@ export function BarcodeTable({
                       src={row.barcodeData}
                       alt={`Código de barras para ${row.inputValue}`}
                       width={200}
-                      height={60}
+                      height={100}
                       style={{
                         display: "flex",
                         objectFit: "contain",
