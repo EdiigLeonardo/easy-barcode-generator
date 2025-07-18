@@ -65,7 +65,7 @@ export default function BatchBarcodeGenerator() {
       setRows((prevRows) => [
         ...prevRows,
         {
-          id: Math.floor(Math.random() * 1000000),
+          id: String(value + Math.floor(Math.random() * 1000000)),
           inputValue: value,
           barcodeData: dataUrl,
         },

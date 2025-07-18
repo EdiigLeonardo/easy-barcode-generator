@@ -1,5 +1,5 @@
 export interface BarcodeRow {
-  id: number;
+  id: number | string;
   inputValue: string;
   barcodeData: string | null;
 }
