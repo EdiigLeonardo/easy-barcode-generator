@@ -77,16 +77,17 @@ export function BarcodeTable({
                     <Image
                       src={row.barcodeData}
                       alt={`Código de barras para ${row.inputValue}`}
-                      width={200}
+                      width={100}
                       height={100}
                       style={{
                         display: "flex",
-                        objectFit: "contain",
+                        objectFit: "cover",
                         maxWidth: "100%",
+                        height: "100%",
+                        width: "100%",
                         justifyContent: "center",
                         justifySelf: "center",
                         alignSelf: "center",
-                        height: "auto",
                         padding: "1rem",
                       }}
                     />
@@ -94,7 +95,9 @@ export function BarcodeTable({
                 )}
               </TableCell>
               <TableCell>
-                <div>{row.clientName}</div>
+                <div style={{ display: "flex", width: "100%", height: "100%" }}>
+                  {row.clientName}
+                </div>
               </TableCell>
 
               <TableCell align="center">
