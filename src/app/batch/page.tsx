@@ -25,7 +25,7 @@ export default function BatchBarcodeGenerator() {
       if (volumeCode) {
         generateBarcode(volumeCode, Math.floor(Math.random() * 1000000));
       } else {
-        alert(
+        window.alert(
           "Erro: O volumeCode está ausente ou os dados estão em formato inválido. Verifique o JSON inserido."
         );
         console.error(
