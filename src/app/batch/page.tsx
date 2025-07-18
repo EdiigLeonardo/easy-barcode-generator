@@ -78,23 +78,27 @@ export default function BatchBarcodeGenerator() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 800, mx: "auto" }}>
-      <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
-        <TextareaAutosize
-          minRows={3}
-          placeholder="Insira os valores separados por linha"
-          value={inputList}
-          onChange={(e) => setInputList(e.target.value)}
-          style={{ width: "100%", padding: "8px" }}
-        />
-        <Button
-          variant="contained"
-          onClick={processList}
-          sx={{ mt: 2 }}
-          disabled={!inputList.trim()}
-        >
-          Gerar Barcodes
-        </Button>
-      </Paper>
+      {!rows ? (
+        <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
+          <TextareaAutosize
+            minRows={3}
+            placeholder="Insira os valores separados por linha"
+            value={inputList}
+            onChange={(e) => setInputList(e.target.value)}
+            style={{ width: "100%", padding: "8px" }}
+          />
+          <Button
+            variant="contained"
+            onClick={processList}
+            sx={{ mt: 2 }}
+            disabled={!inputList.trim()}
+          >
+            Gerar Barcodes
+          </Button>
+        </Paper>
+      ) : (
+        <></>
+      )}
 
       <Paper elevation={3}>
         <BarcodeTable
