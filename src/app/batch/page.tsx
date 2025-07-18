@@ -19,8 +19,16 @@ export default function BatchBarcodeGenerator() {
       volumeCode: string;
       [key: string]: unknown;
     }
-
-    JSON.parse(inputList)?.forEach((stops: InputStop) => {
+    const filteredStops = JSON.parse(inputList)?.filter(
+      (stops: InputStop) =>
+        stops?.status === "READY" ||
+        stops?.status === "LOADED" ||
+        stops?.status === "NEW"
+    );
+    console.debug("[BatchBarcodeGenerator][processList] FilteredStops:", {
+      filteredStops,
+    });
+    filteredStops?.forEach((stops: InputStop) => {
       const volumeCode = stops?.volumeCode;
       if (volumeCode) {
         generateBarcode(volumeCode, Math.floor(Math.random() * 1000000));
@@ -34,6 +42,7 @@ export default function BatchBarcodeGenerator() {
         );
       }
     });
+    setInputList("");
   };
 
   const generateBarcode = (value: string, rowId: number) => {
