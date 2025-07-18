@@ -63,7 +63,7 @@ export default function InterleavedBarcodeGenerator() {
   if (!isMounted) return null;
 
   return (
-    <Box sx={{ p: 3, maxWidth: 800, mx: "auto" }}>
+    <Box sx={{ p: 3, maxWidth: 900, mx: "auto" }}>
       <Paper elevation={3}>
         <BarcodeTable
           rows={rows}

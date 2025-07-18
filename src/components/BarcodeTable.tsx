@@ -27,7 +27,9 @@ export function BarcodeTable({
 }: BarcodeTableProps) {
   return (
     <>
-      <Table style={{ tableLayout: "fixed", maxHeight: "80%" }}>
+      <Table
+        style={{ tableLayout: "fixed", maxHeight: "80%", maxWidth: "100%" }}
+      >
         <TableHead>
           <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
             <TableCell width="40%">Valor de Entrada</TableCell>
@@ -48,7 +50,9 @@ export function BarcodeTable({
                   variant="outlined"
                   value={row.inputValue}
                   disabled={row.barcodeData !== null}
-                  onChange={(e) => onInputChange(row.id, e.target.value)}
+                  onChange={(e) =>
+                    onInputChange(row.id as number, e.target.value)
+                  }
                   placeholder="Digite valores numéricos"
                   inputProps={{
                     pattern: "^[0-9]*$",
@@ -86,12 +90,15 @@ export function BarcodeTable({
                   </div>
                 )}
               </TableCell>
+              <TableCell>
+                <div>{row.clientName}</div>
+              </TableCell>
 
               <TableCell align="center">
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => onGenerate(row.inputValue, row.id)}
+                  onClick={() => onGenerate(row.inputValue, row.id as number)}
                   disabled={
                     row.inputValue?.trim() === "" || row.barcodeData !== null
                   }

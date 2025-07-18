@@ -2,6 +2,7 @@ export interface BarcodeRow {
   id: number | string;
   inputValue: string;
   barcodeData: string | null;
+  clientName?: string;
 }
 
 export const initialRows: BarcodeRow[] = [

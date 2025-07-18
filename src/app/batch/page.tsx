@@ -17,7 +17,7 @@ export default function BatchBarcodeGenerator() {
   const processList = () => {
     interface InputStop {
       volumeCode: string;
-      [key: string]: unknown;
+      [key: string]: string;
     }
     const filteredStops = JSON.parse(inputList)?.filter(
       (stops: InputStop) =>
@@ -31,7 +31,12 @@ export default function BatchBarcodeGenerator() {
     filteredStops?.forEach((stops: InputStop) => {
       const volumeCode = stops?.volumeCode;
       if (volumeCode) {
-        generateBarcode(volumeCode, Math.floor(Math.random() * 1000000));
+        const stopClientName = stops.clientName ?? "";
+        generateBarcode(
+          volumeCode,
+          Math.floor(Math.random() * 1000000),
+          stopClientName
+        );
       } else {
         window.alert(
           "Erro: O volumeCode está ausente ou os dados estão em formato inválido. Verifique o JSON inserido."
@@ -45,7 +50,11 @@ export default function BatchBarcodeGenerator() {
     setInputList("");
   };
 
-  const generateBarcode = (value: string, rowId: number) => {
+  const generateBarcode = (
+    value: string,
+    rowId: number,
+    clientName: string = ""
+  ) => {
     console.info(`Generating barcode for value: ${value}, rowId: ${rowId}`);
     if (!value.trim() || !isMounted) return;
 
@@ -68,6 +77,7 @@ export default function BatchBarcodeGenerator() {
           id: String(value + Math.floor(Math.random() * 1000000)),
           inputValue: value,
           barcodeData: dataUrl,
+          clientName,
         },
       ]);
     } catch (error) {
