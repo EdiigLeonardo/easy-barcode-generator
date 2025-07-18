@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import JsBarcode from "jsbarcode";
-import { Box, Paper, TextareaAutosize, Button } from "@mui/material";
+import { Box, Paper, TextareaAutosize, Button, Divider } from "@mui/material";
 import { BarcodeTable } from "@/components/BarcodeTable";
 import { BarcodeRow } from "@/app/types";
 
@@ -77,29 +77,34 @@ export default function BatchBarcodeGenerator() {
   if (!isMounted) return null;
 
   return (
-    <Box sx={{ p: 3, maxWidth: 800, mx: "auto" }}>
-      {!inputList ? (
-        <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
-          <TextareaAutosize
-            minRows={3}
-            placeholder="Insira os valores separados por linha"
-            value={inputList}
-            onChange={(e) => setInputList(e.target.value)}
-            style={{ width: "100%", padding: "8px" }}
-          />
-          <Button
-            variant="contained"
-            onClick={processList}
-            sx={{ mt: 2 }}
-            disabled={!inputList.trim()}
-          >
-            Gerar Barcodes
-          </Button>
-        </Paper>
-      ) : (
-        <></>
-      )}
-
+    <Box
+      sx={{
+        p: 3,
+        maxWidth: 800,
+        mx: "auto",
+      }}
+    >
+      <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
+        <TextareaAutosize
+          minRows={3}
+          placeholder="Insira os valores separados por linha"
+          value={inputList}
+          onChange={(e) => setInputList(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "8px",
+          }}
+        />
+        <Button
+          variant="contained"
+          onClick={processList}
+          sx={{ mt: 2 }}
+          disabled={!inputList.trim()}
+        >
+          Gerar Barcodes
+        </Button>
+      </Paper>
+      <Divider />
       <Paper elevation={3}>
         <BarcodeTable
           rows={rows}
